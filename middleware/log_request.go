@@ -1,0 +1,16 @@
+package middleware
+
+import (
+	"github.com/labstack/echo"
+	"gitlab.wallstcn.com/baoer/matrix/xgbkb/std/logger"
+)
+
+func LogRequest(next echo.HandlerFunc) echo.HandlerFunc {
+	return func(c echo.Context) (err error) {
+		r := c.Request()
+		logger.Infoln("=========================== New Request Received ===========================")
+		logger.Infof("=== %s %s", r.Method, r.RequestURI)
+		logger.Infof("New request started: %v", r)
+		return nil
+	}
+}
