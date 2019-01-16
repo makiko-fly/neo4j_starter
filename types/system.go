@@ -6,10 +6,13 @@ type SysConfig struct {
 	RedisLogger RedisConfig   `yaml:"redis_logger"`
 	Neo4jDb     Neo4jDbConfig `yaml:"neo4j_db"`
 	Http        HttpConfig    `yaml:"http"`
+	RedisMain   RedisConfig   `yaml:"redis_main"`
+	MysqlJuyuan MysqlConfig   `yaml:"mysql_juyuan"`
 }
 
 func (self SysConfig) String() string {
-	return fmt.Sprintf("==== RedisLogger ====\n%v==== Neo4j ====\n%v", self.RedisLogger, self.Neo4jDb)
+	return fmt.Sprintf("==== RedisLogger ====\n%s==== Neo4j ====\n%s==== Redis Main ====\n%s==== JuyuanMysql ====\n%s",
+		self.RedisLogger, self.Neo4jDb, self.RedisMain, self.MysqlJuyuan)
 }
 
 type Neo4jDbConfig struct {
@@ -44,4 +47,20 @@ type HttpConfig struct {
 
 func (self HttpConfig) String() string {
 	return fmt.Sprintf("  Port: %d", self.Port)
+}
+
+type MysqlConfig struct {
+	User     string `yaml:"user"`
+	Password string `yaml:"password"`
+	Host     string `yaml:"host"`
+	Port     int64  `yaml:"port"`
+	DbName   string `yaml:"db_name"`
+	MaxIdle  int64  `yaml:"max_idle"`
+	MaxConn  int64  `yaml:"max_conn"`
+	LogMode  bool   `yaml:"log_mode"`
+}
+
+func (self MysqlConfig) String() string {
+	return fmt.Sprintf(" User: %s,\n Host: %s,\n Port: %d,\n DbName: %s,\n LogMode: %v", self.User, self.Host,
+		self.Port, self.DbName, self.LogMode)
 }

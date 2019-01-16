@@ -3,6 +3,7 @@ package api
 import (
 	"encoding/json"
 	"net/http"
+	"strings"
 
 	"github.com/labstack/echo"
 	"gitlab.wallstcn.com/baoer/matrix/xgbkb/std"
@@ -21,15 +22,19 @@ func registerHealthCheck(g *echo.Group) {
 
 func registerAdminApis(g *echo.Group) {
 	adminGroup := g.Group("/admin")
-	adminGroup.GET("/search/byName/:keyword", WrapRespAsJson(SearchByName))
+	adminGroup.GET("/search/byName", WrapRespAsJson(SearchByName))
+	adminGroup.POST("/products", WrapRespAsJson(CreateProduct))
+	adminGroup.PUT("/products/:oldName", WrapRespAsJson(UpdateProduct))
+
 }
 
 // ==================================================================
 
 type Response struct {
-	Code    int64           `json:"code"`
-	Message string          `json:"message"`
-	Data    json.RawMessage `json:"data"`
+	Code       int64           `json:"code"`
+	Msg        string          `json:"msg"`
+	DisplayMsg string          `json:"display_msg"`
+	Data       json.RawMessage `json:"data"`
 }
 
 type (
@@ -48,23 +53,34 @@ func WrapRespAsJson(handler CommonHttpHandler) echo.HandlerFunc {
 }
 
 func wrapErrRespAsJson(ctx echo.Context, err error) error {
+	var isAdminApi = false
+	if strings.Index(ctx.Path(), "/admin/") == 0 {
+		isAdminApi = true
+	}
+
 	resp := new(Response)
 	resp.Data = []byte("{}")
-	errWithCode, ok := err.(*std.ErrWithCode)
+	// set code
+	stdErr, ok := err.(*std.Err)
 	if ok {
-		resp.Code = errWithCode.Code
-		resp.Message = errWithCode.Error()
+		resp.Code = stdErr.Code
 	} else {
 		resp.Code = std.DefaultErrCode
-		resp.Message = err.Error()
 	}
+	// set message
+	if isAdminApi {
+		resp.DisplayMsg = err.Error()
+	} else {
+		resp.DisplayMsg = "something went wrong"
+	}
+
 	return ctx.JSON(http.StatusOK, resp)
 }
 
 func wrapNormalRespAsJson(ctx echo.Context, data interface{}) error {
 	resp := new(Response)
 	resp.Code = std.SuccessCode
-	resp.Message = ""
+	resp.Msg = ""
 	// assemble data
 	if data == nil {
 		data = make(map[string]interface{})
@@ -77,7 +93,7 @@ func wrapNormalRespAsJson(ctx echo.Context, data interface{}) error {
 		if err != nil {
 			// change return code
 			resp.Code = std.DefaultErrCode
-			resp.Message = "fails to marshal response as json"
+			resp.Msg = "fails to marshal response as json"
 			resp.Data = []byte("{}")
 		} else {
 			resp.Data = dataBytes

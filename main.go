@@ -5,8 +5,10 @@ import (
 
 	"github.com/labstack/echo"
 	"gitlab.wallstcn.com/baoer/matrix/xgbkb/api"
+	"gitlab.wallstcn.com/baoer/matrix/xgbkb/business"
 	"gitlab.wallstcn.com/baoer/matrix/xgbkb/g"
 	"gitlab.wallstcn.com/baoer/matrix/xgbkb/middleware"
+	"gitlab.wallstcn.com/baoer/matrix/xgbkb/schedule"
 	"gitlab.wallstcn.com/baoer/matrix/xgbkb/std"
 	"gitlab.wallstcn.com/baoer/matrix/xgbkb/std/redislogger"
 )
@@ -17,6 +19,15 @@ func main() {
 	}
 	redislogger.Init(g.SysConf.RedisLogger.Host, g.SysConf.RedisLogger.Port, g.SysConf.RedisLogger.Auth)
 	redislogger.Printf("Loaded conf: \n%v", g.SysConf)
+
+	g.InitShanghaiTimeZone()
+	g.InitRedisClients()
+	g.InitDb()
+
+	business.InitNeo4j()
+
+	schedule.StartJobs()
+	defer schedule.StopJobs()
 
 	e := echo.New()
 	e.Use(middleware.LogRequest)
