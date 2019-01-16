@@ -25,6 +25,7 @@ func registerAdminApis(g *echo.Group) {
 	adminGroup.GET("/search/byName", WrapRespAsJson(SearchByName))
 	adminGroup.POST("/products", WrapRespAsJson(CreateProduct))
 	adminGroup.PUT("/products/:oldName", WrapRespAsJson(UpdateProduct))
+	adminGroup.GET("/node/directlyRelated", WrapRespAsJson(GetDirectlyRelatedNodes))
 
 }
 
