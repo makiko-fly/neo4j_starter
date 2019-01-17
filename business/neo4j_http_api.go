@@ -140,5 +140,6 @@ func parseNeo4jJsonResp(data []byte) (*types.Neo4jQueryResponse, error) {
 
 func EscapeStmt(stmt string) string {
 	stmt = strings.Replace(stmt, "\n", " ", -1)
+	stmt = strings.Replace(stmt, "\t", " ", -1)
 	return stmt
 }
