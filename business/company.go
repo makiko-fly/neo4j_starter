@@ -1,6 +1,6 @@
 package business
 
-import "gitlab.wallstcn.com/baoer/matrix/xgbkb/types"
+import "gitlab.wallstcn.com/matrix/xgbkb/types"
 
 var createCompanyStmt = "CREATE (c:Company {name: $name, nameAbbr: $nameAbbr, code: $code}) RETURN c"
 

@@ -1,6 +1,6 @@
 package business
 
-import "gitlab.wallstcn.com/baoer/matrix/xgbkb/types"
+import "gitlab.wallstcn.com/matrix/xgbkb/types"
 
 var listChainsStmt = "MATCH (c:Chain) RETURN c SKIP $offset LIMIT $limit"
 

@@ -3,10 +3,10 @@ package schedule
 import (
 	"time"
 
-	"gitlab.wallstcn.com/baoer/matrix/xgbkb/business"
-	"gitlab.wallstcn.com/baoer/matrix/xgbkb/g"
-	"gitlab.wallstcn.com/baoer/matrix/xgbkb/std/redislogger"
-	"gitlab.wallstcn.com/baoer/matrix/xgbkb/types"
+	"gitlab.wallstcn.com/matrix/xgbkb/business"
+	"gitlab.wallstcn.com/matrix/xgbkb/g"
+	"gitlab.wallstcn.com/matrix/xgbkb/std/redislogger"
+	"gitlab.wallstcn.com/matrix/xgbkb/types"
 )
 
 type CompanyAndStockInfo struct {

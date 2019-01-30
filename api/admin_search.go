@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"github.com/labstack/echo"
-	"gitlab.wallstcn.com/baoer/matrix/xgbkb/business"
+	"gitlab.wallstcn.com/matrix/xgbkb/business"
 )
 
 func ApiSearchByName(ctx echo.Context) (interface{}, error) {

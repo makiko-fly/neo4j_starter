@@ -1,7 +1,7 @@
 package std
 
 import (
-	"gitlab.wallstcn.com/baoer/matrix/xgbkb/std/redislogger"
+	"gitlab.wallstcn.com/matrix/xgbkb/std/redislogger"
 )
 
 type MutexTask struct {

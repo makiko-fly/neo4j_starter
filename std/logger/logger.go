@@ -3,7 +3,7 @@ package logger
 import (
 	"fmt"
 
-	"gitlab.wallstcn.com/baoer/matrix/xgbkb/std/redislogger"
+	"gitlab.wallstcn.com/matrix/xgbkb/std/redislogger"
 )
 
 func Infoln(args ...interface{}) {

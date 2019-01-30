@@ -2,7 +2,7 @@ package middleware
 
 import (
 	"github.com/labstack/echo"
-	"gitlab.wallstcn.com/baoer/matrix/xgbkb/std/logger"
+	"gitlab.wallstcn.com/matrix/xgbkb/std/logger"
 )
 
 func LogRequest(next echo.HandlerFunc) echo.HandlerFunc {

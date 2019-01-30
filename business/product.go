@@ -1,7 +1,7 @@
 package business
 
 import (
-	"gitlab.wallstcn.com/baoer/matrix/xgbkb/types"
+	"gitlab.wallstcn.com/matrix/xgbkb/types"
 )
 
 var createProductStmt = "CREATE (p:Product {name: $name, imgActivated: $imgActivated, imgNormal: $imgNormal}) RETURN p"

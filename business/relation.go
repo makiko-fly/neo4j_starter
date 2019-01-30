@@ -3,9 +3,9 @@ package business
 import (
 	"fmt"
 
-	"gitlab.wallstcn.com/baoer/matrix/xgbkb/common"
-	"gitlab.wallstcn.com/baoer/matrix/xgbkb/g"
-	"gitlab.wallstcn.com/baoer/matrix/xgbkb/types"
+	"gitlab.wallstcn.com/matrix/xgbkb/common"
+	"gitlab.wallstcn.com/matrix/xgbkb/g"
+	"gitlab.wallstcn.com/matrix/xgbkb/types"
 )
 
 var createRelationStmtTmpl = `

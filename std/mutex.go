@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"gitlab.wallstcn.com/baoer/matrix/xgbkb/std/redislogger"
+	"gitlab.wallstcn.com/matrix/xgbkb/std/redislogger"
 	"gopkg.in/redis.v5"
 )
 

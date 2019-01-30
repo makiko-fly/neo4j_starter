@@ -4,13 +4,13 @@ import (
 	"fmt"
 
 	"github.com/labstack/echo"
-	"gitlab.wallstcn.com/baoer/matrix/xgbkb/api"
-	"gitlab.wallstcn.com/baoer/matrix/xgbkb/business"
-	"gitlab.wallstcn.com/baoer/matrix/xgbkb/g"
-	"gitlab.wallstcn.com/baoer/matrix/xgbkb/middleware"
-	"gitlab.wallstcn.com/baoer/matrix/xgbkb/schedule"
-	"gitlab.wallstcn.com/baoer/matrix/xgbkb/std"
-	"gitlab.wallstcn.com/baoer/matrix/xgbkb/std/redislogger"
+	"gitlab.wallstcn.com/matrix/xgbkb/api"
+	"gitlab.wallstcn.com/matrix/xgbkb/business"
+	"gitlab.wallstcn.com/matrix/xgbkb/g"
+	"gitlab.wallstcn.com/matrix/xgbkb/middleware"
+	"gitlab.wallstcn.com/matrix/xgbkb/schedule"
+	"gitlab.wallstcn.com/matrix/xgbkb/std"
+	"gitlab.wallstcn.com/matrix/xgbkb/std/redislogger"
 )
 
 func main() {

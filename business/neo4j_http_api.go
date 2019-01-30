@@ -9,11 +9,11 @@ import (
 	"net/http"
 	"strings"
 
-	"gitlab.wallstcn.com/baoer/matrix/xgbkb/g"
-	"gitlab.wallstcn.com/baoer/matrix/xgbkb/std"
-	"gitlab.wallstcn.com/baoer/matrix/xgbkb/std/logger"
-	"gitlab.wallstcn.com/baoer/matrix/xgbkb/std/redislogger"
-	"gitlab.wallstcn.com/baoer/matrix/xgbkb/types"
+	"gitlab.wallstcn.com/matrix/xgbkb/g"
+	"gitlab.wallstcn.com/matrix/xgbkb/std"
+	"gitlab.wallstcn.com/matrix/xgbkb/std/logger"
+	"gitlab.wallstcn.com/matrix/xgbkb/std/redislogger"
+	"gitlab.wallstcn.com/matrix/xgbkb/types"
 )
 
 func InitNeo4j() {

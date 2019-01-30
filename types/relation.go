@@ -1,6 +1,6 @@
 package types
 
-import "gitlab.wallstcn.com/baoer/matrix/xgbkb/common"
+import "gitlab.wallstcn.com/matrix/xgbkb/common"
 
 type RelationIn struct {
 	FromNodeId   int64               `json:"from_node_id"`

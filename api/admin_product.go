@@ -6,8 +6,8 @@ import (
 	"strings"
 
 	"github.com/labstack/echo"
-	"gitlab.wallstcn.com/baoer/matrix/xgbkb/business"
-	"gitlab.wallstcn.com/baoer/matrix/xgbkb/types"
+	"gitlab.wallstcn.com/matrix/xgbkb/business"
+	"gitlab.wallstcn.com/matrix/xgbkb/types"
 )
 
 func ApiCreateProduct(ctx echo.Context) (interface{}, error) {

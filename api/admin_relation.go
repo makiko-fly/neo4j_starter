@@ -5,8 +5,8 @@ import (
 	"strings"
 
 	"github.com/labstack/echo"
-	"gitlab.wallstcn.com/baoer/matrix/xgbkb/business"
-	"gitlab.wallstcn.com/baoer/matrix/xgbkb/types"
+	"gitlab.wallstcn.com/matrix/xgbkb/business"
+	"gitlab.wallstcn.com/matrix/xgbkb/types"
 )
 
 func ApiCreateRelation(ctx echo.Context) (interface{}, error) {

@@ -4,8 +4,8 @@ import (
 	"time"
 
 	"github.com/robfig/cron"
-	"gitlab.wallstcn.com/baoer/matrix/xgbkb/g"
-	"gitlab.wallstcn.com/baoer/matrix/xgbkb/std"
+	"gitlab.wallstcn.com/matrix/xgbkb/g"
+	"gitlab.wallstcn.com/matrix/xgbkb/std"
 )
 
 // A cron expression represents a set of times, using 6 space-separated fields.

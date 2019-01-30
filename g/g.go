@@ -5,8 +5,8 @@ import (
 
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
-	"gitlab.wallstcn.com/baoer/matrix/xgbkb/std/redislogger"
-	"gitlab.wallstcn.com/baoer/matrix/xgbkb/types"
+	"gitlab.wallstcn.com/matrix/xgbkb/std/redislogger"
+	"gitlab.wallstcn.com/matrix/xgbkb/types"
 	"gopkg.in/redis.v5"
 )
 

@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	"github.com/labstack/echo"
-	"gitlab.wallstcn.com/baoer/matrix/xgbkb/std"
+	"gitlab.wallstcn.com/matrix/xgbkb/std"
 )
 
 func RegisterHttpPaths(g *echo.Group) {
