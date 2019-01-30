@@ -22,11 +22,18 @@ func registerHealthCheck(g *echo.Group) {
 
 func registerAdminApis(g *echo.Group) {
 	adminGroup := g.Group("/admin")
-	adminGroup.GET("/search/byName", WrapRespAsJson(SearchByName))
-	adminGroup.POST("/products", WrapRespAsJson(CreateProduct))
-	adminGroup.PUT("/products/:oldName", WrapRespAsJson(UpdateProduct))
-	adminGroup.GET("/node/directlyRelated", WrapRespAsJson(GetDirectlyRelatedNodes))
-	adminGroup.POST("/relations", WrapRespAsJson(CreateRelation))
+	adminGroup.GET("/search/byName", WrapRespAsJson(ApiSearchByName))
+	adminGroup.POST("/product", WrapRespAsJson(ApiCreateProduct))
+	adminGroup.PUT("/products/:id", WrapRespAsJson(ApiUpdateProduct))
+	adminGroup.GET("/node/directlyRelated", WrapRespAsJson(ApiGetDirectlyRelatedNodes))
+	adminGroup.POST("/relation", WrapRespAsJson(ApiCreateRelation))
+	adminGroup.GET("/chains/list", WrapRespAsJson(ApiListChains))
+	adminGroup.POST("/chain", WrapRespAsJson(ApiCreateChain))
+	adminGroup.PUT("/chain/:id", WrapRespAsJson(ApiUpdateChain))
+	adminGroup.GET("/chain/products", WrapRespAsJson(ApiGetProductsOfChain))
+	adminGroup.POST("/chain/addProduct", WrapRespAsJson(ApiAddProductToChain))
+	adminGroup.POST("/chain/remProduct", WrapRespAsJson(ApiRemoveProductFromChain))
+
 }
 
 // ==================================================================

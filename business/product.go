@@ -15,16 +15,21 @@ func CreateProduct(productIn *types.ProductIn) (interface{}, error) {
 }
 
 var updateProductStmt = `
-	MATCH (p:Product {name: $oldName}) 
+	MATCH (p:Product {name: $oldName}) WHERE id(p) = $id
 	SET p.name = $newName, p.imgActivated = $imgActivated, p.imgNormal = $imgNormal
 	RETURN p
 `
 
-func UpdateProduct(oldName string, productIn *types.ProductIn) (interface{}, error) {
+func UpdateProduct(id int64, oldName string, productIn *types.ProductIn) (interface{}, error) {
 	paramsMap := make(map[string]interface{})
+	paramsMap["id"] = id
 	paramsMap["oldName"] = oldName
 	paramsMap["newName"] = productIn.Name
 	paramsMap["imgActivated"] = productIn.ImgActivated
 	paramsMap["imgNormal"] = productIn.ImgNormal
 	return QueryNeo4j(updateProductStmt, paramsMap, false)
+}
+
+func IsValidProductName(name string) bool {
+	return true
 }

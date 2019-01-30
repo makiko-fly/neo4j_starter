@@ -8,7 +8,7 @@ import (
 	"gitlab.wallstcn.com/baoer/matrix/xgbkb/business"
 )
 
-func SearchByName(ctx echo.Context) (interface{}, error) {
+func ApiSearchByName(ctx echo.Context) (interface{}, error) {
 	keywordStr := strings.TrimSpace(ctx.QueryParam("keyword"))
 	if len(keywordStr) == 0 {
 		return nil, errors.New("empty keyword")

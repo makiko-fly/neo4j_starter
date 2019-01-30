@@ -13,9 +13,9 @@ func CreateCompany(companyIn *types.CompanyIn) (interface{}, error) {
 }
 
 var mergeListedAsStmt = `
-MATCH (c:Company {code: $code}), (s:Stock {symbol: $symbol})
-MERGE (c)-[r:LISTED_AS]->(s)
-RETURN r
+	MATCH (c:Company {code: $code}), (s:Stock {symbol: $symbol})
+	MERGE (c)-[r:LISTED_AS]->(s)
+	RETURN r
 `
 
 func MergeListedAsRelation(companyIn *types.CompanyIn, stockIn *types.StockIn) (interface{}, error) {

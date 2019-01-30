@@ -37,6 +37,10 @@ func InitNeo4j() {
 	// add unique constraint to Stock's properties
 	AssertQueryNeo4j("CREATE CONSTRAINT ON (s:Stock) ASSERT s.symbol IS UNIQUE", nil)
 
+	// add property exist constraint to Chain's properties
+	AssertQueryNeo4j("CREATE CONSTRAINT ON (c:Chain) ASSERT exists(c.name)", nil)
+	// add unique constraint to Chain's properties
+	AssertQueryNeo4j("CREATE CONSTRAINT ON (c:Chain) ASSERT c.name IS UNIQUE", nil)
 }
 
 // assert the statement can be executed successfully, if any err occurs, panic

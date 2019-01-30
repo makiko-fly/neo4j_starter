@@ -9,7 +9,7 @@ import (
 	"gitlab.wallstcn.com/baoer/matrix/xgbkb/types"
 )
 
-func CreateRelation(ctx echo.Context) (interface{}, error) {
+func ApiCreateRelation(ctx echo.Context) (interface{}, error) {
 	var relationIn types.RelationIn
 	if err := ctx.Bind(&relationIn); err != nil {
 		return nil, err

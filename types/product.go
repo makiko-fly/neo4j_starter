@@ -7,3 +7,9 @@ type ProductIn struct {
 }
 
 type Product ProductIn
+
+type UpdateProductIn struct {
+	Id      int64  `json:"id"`
+	OldName string `json:"old_name"`
+	ProductIn
+}
