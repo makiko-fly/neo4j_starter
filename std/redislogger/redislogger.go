@@ -1,10 +1,15 @@
 package redislogger
 
 import (
+	"bytes"
 	"fmt"
+	"html/template"
+	"net/http"
 	"os"
+	"strconv"
 	"time"
 
+	"github.com/labstack/echo"
 	"gopkg.in/redis.v5"
 )
 
@@ -127,3 +132,62 @@ func Entries(slotNum, limit int32) ([]string, error) {
 		return entries, nil
 	}
 }
+
+// =====================================================================================================================
+// http API
+
+func MountRedisLog(g *echo.Group) {
+	redislogGroup := g.Group("/redislog")
+	redislogGroup.GET("", redisLogHandler)
+}
+
+func redisLogHandler(c echo.Context) error {
+	slot, _ := strconv.ParseInt(c.FormValue("slot"), 10, 64)
+	limit, _ := strconv.ParseInt(c.FormValue("limit"), 10, 64)
+	if limit <= 0 {
+		limit = 5000
+	}
+	entries, err := Entries(int32(slot), int32(limit))
+	if err != nil {
+		return c.String(http.StatusOK, err.Error())
+	} else {
+		if compiledHtmlTempate == nil {
+			if tmpTemplate, err := template.New("redislog").Parse(HTML_TEMPLATE); err != nil {
+				return err
+			} else {
+				compiledHtmlTempate = tmpTemplate
+			}
+		}
+		var dest bytes.Buffer
+		if err := compiledHtmlTempate.Execute(&dest, entries); err != nil {
+			return err
+		}
+		return c.HTML(http.StatusOK, dest.String())
+	}
+}
+
+var HTML_TEMPLATE = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>服务器端错误日志</title>
+    <style type="text/css">
+    	p {
+    		margin: 0;
+    	}
+    </style>
+</head>
+
+<body>
+<div class='main-520-wrapper'>
+	<div class="xgb_content">
+			{{ range . }}
+			<p>
+            {{ . }}
+			</p>
+			{{ end }}
+	</div>
+</div>
+</body>
+`
+var compiledHtmlTempate *template.Template

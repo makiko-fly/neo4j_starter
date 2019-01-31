@@ -7,10 +7,12 @@ import (
 
 	"github.com/labstack/echo"
 	"gitlab.wallstcn.com/matrix/xgbkb/std"
+	"gitlab.wallstcn.com/matrix/xgbkb/std/redislogger"
 )
 
 func RegisterHttpPaths(g *echo.Group) {
 	registerHealthCheck(g)
+	registerRedislog(g)
 	registerAdminApis(g)
 }
 
@@ -18,6 +20,10 @@ func registerHealthCheck(g *echo.Group) {
 	g.GET("/health-check", func(c echo.Context) error {
 		return c.String(http.StatusOK, "You Got It!")
 	})
+}
+
+func registerRedislog(g *echo.Group) {
+	redislogger.MountRedisLog(g)
 }
 
 func registerAdminApis(g *echo.Group) {
