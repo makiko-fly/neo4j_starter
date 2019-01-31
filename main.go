@@ -33,7 +33,7 @@ func main() {
 	e.Use(middleware.LogRequest)
 	baseGroup := e.Group("")
 	api.RegisterHttpPaths(baseGroup)
-	err := e.Start(fmt.Sprintf("127.0.0.1:%d", g.SysConf.Http.Port))
+	err := e.Start(fmt.Sprintf("0.0.0.0:%d", g.SysConf.Http.Port))
 	if err != nil {
 		redislogger.Errf("Main, http server fails to start, err: %v", err)
 	}
