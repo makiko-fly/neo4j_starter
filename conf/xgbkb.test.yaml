@@ -1,21 +1,21 @@
 redis_logger:
-  host: "127.0.0.1"
+  host: "10.0.2.102"
   port: 6379
-  auth: ""
+  auth: "crs-ec8hbn1w:253Huaerjie!"
   
 neo4j_db:
-  addr: "127.0.0.1"
+  addr: "10.0.50.16"
   bolt_port: 7687 # not used
-  http_port: 7474 
+  http_port: 17474 
   https_port: 7473 # not used
 
 http:
-  port: 3001
+  port: 80
 
 redis_main:
-  host: "127.0.0.1"
+  host: "10.0.2.102"
   port: 6379
-  auth: ""
+  auth: "crs-ec8hbn1w:253Huaerjie!"
 
 mysql_juyuan:
   user: root
