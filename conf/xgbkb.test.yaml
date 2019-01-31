@@ -1,0 +1,26 @@
+redis_logger:
+  host: "127.0.0.1"
+  port: 6379
+  auth: ""
+  
+neo4j_db:
+  addr: "127.0.0.1"
+  bolt_port: 7687 # not used
+  http_port: 7474 
+  https_port: 7473 # not used
+
+http:
+  port: 3001
+
+redis_main:
+  host: "127.0.0.1"
+  port: 6379
+  auth: ""
+
+mysql_juyuan:
+  user: root
+  password: "253Huaerjie!"
+  host: "sh-cdb-472kwv39.sql.tencentcdb.com"
+  port: 62829
+  db_name: "JYDB"
+  log_mode: true

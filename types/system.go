@@ -16,10 +16,12 @@ func (self SysConfig) String() string {
 }
 
 type Neo4jDbConfig struct {
-	Addr      string
-	BoltPort  int64
-	HttpPort  int64
-	HttpsPort int64
+	Addr      string `yaml:"addr"`
+	BoltPort  int64  `yaml:"bolt_port"`
+	HttpPort  int64  `yaml:"http_port"`
+	HttpsPort int64  `yaml:"https_port"`
+	UserName  string `yaml:"user_name"`
+	Password  string `yaml:"password"`
 }
 
 func (self Neo4jDbConfig) String() string {

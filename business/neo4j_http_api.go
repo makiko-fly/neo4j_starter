@@ -2,6 +2,7 @@ package business
 
 import (
 	"bytes"
+	"encoding/base64"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -110,7 +111,9 @@ func callNeo4jHttpApi(path, bodyStr string) ([]byte, error) {
 		return nil, err
 	}
 	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("Authorization", "Basic bmVvNGo6aWFtc29ycnk=")
+	encodedAuthStr := encodeNeo4jUserNameAndPassword(g.SysConf.Neo4jDb.UserName, g.SysConf.Neo4jDb.Password)
+	// logger.Infof("===> encodedAuthStr: %s", encodedAuthStr)
+	req.Header.Set("Authorization", "Basic "+encodedAuthStr)
 	logger.Infof("=== calling neo4j HTTP API with statements: %s", bodyStr)
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
@@ -140,6 +143,11 @@ func parseNeo4jJsonResp(data []byte) (*types.Neo4jQueryResponse, error) {
 		// TODO... make sure the results are in the correct format
 		return &resp, nil
 	}
+}
+
+func encodeNeo4jUserNameAndPassword(userName, password string) string {
+	strToEncode := userName + ":" + password
+	return base64.StdEncoding.EncodeToString([]byte(strToEncode))
 }
 
 func EscapeStmt(stmt string) string {
