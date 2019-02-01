@@ -13,7 +13,7 @@ import (
 	"gopkg.in/redis.v5"
 )
 
-const KeyLogList string = "custom:log:list"
+const KeyLogList string = "kb:custom:log:list"
 const MaxListSize = 20000
 
 var redisClient *redis.Client
