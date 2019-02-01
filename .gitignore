@@ -34,3 +34,4 @@ dump.rdb
 xgbkb
 # local config
 conf/xgbkb.local.yaml
+conf/xgbkb.xgblocal.yaml

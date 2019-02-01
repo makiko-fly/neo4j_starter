@@ -17,10 +17,10 @@ const (
 	EnumEnv_PROD
 )
 
-var Env_LOCAL = "local"
-var Env_DEV = "test"
-var Env_STAGE = "stage"
-var Env_PROD = "prod"
+var Env_LOCAL = "xgblocal"
+var Env_DEV = "xgbtest"
+var Env_STAGE = "xgbstage"
+var Env_PROD = "xgbprod"
 
 func parseEnv(envStr string) EnumEnv {
 	if envStr == Env_LOCAL {
