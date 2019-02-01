@@ -23,7 +23,7 @@ var jobsRunner = cron.NewWithLocation(g.ShanghaiTimezone)
 
 func StartJobs() {
 
-	StartJobsTest()
+	RunOneTimeTasks()
 
 	// 每天更新公司到图数据库
 	jobsRunner.AddJob("0 0 1 * * *", std.NewMutexTask(SyncCompaniesAndStocksFromJuyuan).
@@ -31,10 +31,11 @@ func StartJobs() {
 
 }
 
-// in local env, we might want to run some tasks upon program start
-func StartJobsTest() {
+func RunOneTimeTasks() {
 	go func() {
-		// SyncCompaniesAndStocksFromJuyuan()
+		std.NewMutexTask(SyncCompaniesAndStocksFromJuyuan).
+			WithMutex(std.NewSimpleRedisMutex("SyncCompaniesAndStocksFromJuyuan", time.Minute*4, g.RedisClientMain)).
+			Run()
 	}()
 }
 
