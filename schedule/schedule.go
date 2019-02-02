@@ -19,9 +19,10 @@ import (
 // Month        | Yes        | 1-12 or JAN-DEC | * / , -
 // Day of week  | Yes        | 0-6 or SUN-SAT  | * / , - ?
 
-var jobsRunner = cron.NewWithLocation(g.ShanghaiTimezone)
+var jobsRunner *cron.Cron
 
 func StartJobs() {
+	jobsRunner = cron.NewWithLocation(g.ShanghaiTimezone)
 
 	RunOneTimeTasks()
 
@@ -29,6 +30,7 @@ func StartJobs() {
 	jobsRunner.AddJob("0 0 1 * * *", std.NewMutexTask(SyncCompaniesAndStocksFromJuyuan).
 		WithMutex(std.NewSimpleRedisMutex("SyncCompaniesAndStocksFromJuyuan", time.Minute*4, g.RedisClientMain)))
 
+	jobsRunner.Start()
 }
 
 func RunOneTimeTasks() {
