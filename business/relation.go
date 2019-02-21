@@ -21,7 +21,8 @@ func CreateRelation(relationIn *types.RelationIn) (interface{}, error) {
 	if relationIn.Relation == common.EnumRelation_PRODUCES {
 		fromNodeLabel = g.LabelCompany
 		toNodeLabel = g.LabelProduct
-	} else if relationIn.Relation == common.EnumRelation_HAS_DOWNSTREAM {
+	} else if relationIn.Relation == common.EnumRelation_HAS_DOWNSTREAM ||
+		relationIn.Relation == common.EnumRelation_HAS_CHILD {
 		fromNodeLabel = g.LabelProduct
 		toNodeLabel = g.LabelProduct
 	}
