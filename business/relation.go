@@ -11,8 +11,8 @@ import (
 var createRelationStmtTmpl = `
 	MATCH (n:%s), (m:%s)
 	WHERE id(n) = $fromNodeId and n.name = $fromNodeName and id(m) = $toNodeId and m.name = $toNodeName
-	MERGE (n)-[:%s]->(m)
-	RETURN n, m
+	MERGE (n)-[r:%s]->(m)
+	RETURN n, r, m
 `
 
 func CreateRelation(relationIn *types.RelationIn) (interface{}, error) {
