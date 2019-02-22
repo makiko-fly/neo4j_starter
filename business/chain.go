@@ -26,7 +26,7 @@ func IsValidChainName(name string) bool {
 
 var updateChainStmt = `
 	MATCH (c:Chain {name: $oldName}) WHERE id(c) = $id
-	SET c.name = $newName, c.previewImg = $previewImg
+	SET c.name = $newName, c.previewImg = $previewImg, c.customData = $customData
 	RETURN c
 `
 
@@ -36,6 +36,7 @@ func UpdateChain(updateChainIn *types.UpdateChainIn) (interface{}, error) {
 	paramsMap["oldName"] = updateChainIn.OldName
 	paramsMap["newName"] = updateChainIn.Name
 	paramsMap["previewImg"] = updateChainIn.PreviewImg
+	paramsMap["customData"] = updateChainIn.CustomData
 	return QueryNeo4j(updateChainStmt, paramsMap, false)
 }
 

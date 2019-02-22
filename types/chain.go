@@ -30,4 +30,5 @@ type UpdateChainIn struct {
 	OldName    string `json:"old_name"`
 	Name       string `json:"name"`
 	PreviewImg string `json:"preview_img'`
+	CustomData string `json:"custom_data"`
 }
