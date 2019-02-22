@@ -42,15 +42,15 @@ func ApiCreateChain(ctx echo.Context) (interface{}, error) {
 }
 
 func ApiGetChain(ctx echo.Context) (interface{}, error) {
-	var getChainIn types.GetChainIn
-	if err := ctx.Bind(&getChainIn); err != nil {
-		return nil, err
-	}
-	if strings.TrimSpace(getChainIn.Name) == "" {
+	name := strings.TrimSpace(ctx.QueryParam("name"))
+	if strings.TrimSpace(name) == "" {
 		return nil, errors.New("Chain name empty")
 	}
+	if !business.IsValidChainName(name) {
+		return nil, errors.New("Invalid chain name")
+	}
 	id, _ := strconv.ParseInt(ctx.Param("id"), 10, 64)
-	return business.GetChain(id, getChainIn.Name)
+	return business.GetChain(id, name)
 }
 
 func ApiUpdateChain(ctx echo.Context) (interface{}, error) {

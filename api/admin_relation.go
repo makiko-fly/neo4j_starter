@@ -41,3 +41,5 @@ func ApiCreateRelation(ctx echo.Context) (interface{}, error) {
 
 	return business.CreateRelation(&relationIn)
 }
+
+// func ApiDeleteRelation(ctx echo.Context)

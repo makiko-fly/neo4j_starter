@@ -33,6 +33,7 @@ func registerAdminApis(g *echo.Group) {
 	adminGroup.PUT("/products/:id", WrapRespAsJson(ApiUpdateProduct))
 	adminGroup.GET("/node/directlyRelated", WrapRespAsJson(ApiGetDirectlyRelatedNodes))
 	adminGroup.POST("/relation", WrapRespAsJson(ApiCreateRelation))
+	// adminGroup.DELETE("/relation/:id", WrapRespAsJson(ApiDeleteRelation))
 	adminGroup.GET("/chain/:id", WrapRespAsJson(ApiGetChain))
 	adminGroup.GET("/chains/list", WrapRespAsJson(ApiListChains))
 	adminGroup.POST("/chain", WrapRespAsJson(ApiCreateChain))
@@ -40,7 +41,6 @@ func registerAdminApis(g *echo.Group) {
 	adminGroup.GET("/chain/products", WrapRespAsJson(ApiGetProductsOfChain))
 	adminGroup.POST("/chain/addProduct", WrapRespAsJson(ApiAddProductToChain))
 	adminGroup.POST("/chain/remProduct", WrapRespAsJson(ApiRemoveProductFromChain))
-
 }
 
 // ==================================================================

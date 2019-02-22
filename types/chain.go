@@ -3,11 +3,6 @@ package types
 type ChainIn struct {
 	Name string `json:"name"`
 }
-
-type GetChainIn struct {
-	Name string `json:"name"`
-}
-
 type ListChainsIn struct {
 	Page  int64 `json:"page"`
 	Limit int64 `json:"limit"`
