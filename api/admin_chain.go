@@ -49,7 +49,8 @@ func ApiGetChain(ctx echo.Context) (interface{}, error) {
 	if strings.TrimSpace(getChainIn.Name) == "" {
 		return nil, errors.New("Chain name empty")
 	}
-	return business.GetChain(getChainIn.Id, getChainIn.Name)
+	id, _ := strconv.ParseInt(ctx.Param("id"), 10, 64)
+	return business.GetChain(id, getChainIn.Name)
 }
 
 func ApiUpdateChain(ctx echo.Context) (interface{}, error) {
