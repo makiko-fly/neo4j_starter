@@ -4,6 +4,11 @@ type ChainIn struct {
 	Name string `json:"name"`
 }
 
+type GetChainIn struct {
+	Id   int64  `json:"id"`
+	Name string `json:"name"`
+}
+
 type ListChainsIn struct {
 	Page  int64 `json:"page"`
 	Limit int64 `json:"limit"`

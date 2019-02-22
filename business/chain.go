@@ -12,6 +12,15 @@ func ListChains(page, limit int64) (interface{}, error) {
 	return QueryNeo4j(listChainsStmt, paramsMap, false)
 }
 
+var getChainStmt = "MATCH (c:Chain {name:$chainName}) WHERE id(c) = $id RETURN c"
+
+func GetChain(id int64, name string) (interface{}, error) {
+	paramsMap := make(map[string]interface{})
+	paramsMap["id"] = id
+	paramsMap["name"] = name
+	return QueryNeo4j(getChainStmt, paramsMap, false)
+}
+
 var createChainStmt = "CREATE (c:Chain {name: $name}) RETURN c"
 
 func CreateChain(chainIn *types.ChainIn) (interface{}, error) {

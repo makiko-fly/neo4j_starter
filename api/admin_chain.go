@@ -41,6 +41,17 @@ func ApiCreateChain(ctx echo.Context) (interface{}, error) {
 	return business.CreateChain(&chainIn)
 }
 
+func ApiGetChain(ctx echo.Context) (interface{}, error) {
+	var getChainIn types.GetChainIn
+	if err := ctx.Bind(&getChainIn); err != nil {
+		return nil, err
+	}
+	if strings.TrimSpace(getChainIn.Name) == "" {
+		return nil, errors.New("Chain name empty")
+	}
+	return business.GetChain(getChainIn.Id, getChainIn.Name)
+}
+
 func ApiUpdateChain(ctx echo.Context) (interface{}, error) {
 	var updateChainIn types.UpdateChainIn
 	if err := ctx.Bind(&updateChainIn); err != nil {
