@@ -4,11 +4,12 @@ import (
 	"strings"
 )
 
-var getDirectlyRelatedNodesStmt = "MATCH (a)-[r]-(b) WHERE id(a) = $nodeId RETURN r"
+var getDirectlyRelatedNodesStmt = "MATCH (a {name:$nodeName})-[r]-(b) WHERE id(a) = $nodeId RETURN r"
 
-func GetDirectlyRelatedNodes(nodeId int64) (interface{}, error) {
+func GetDirectlyRelatedNodes(nodeId int64, nodeName string) (interface{}, error) {
 	paramsMap := make(map[string]interface{})
 	paramsMap["nodeId"] = nodeId
+	paramsMap["nodeName"] = nodeName
 	return QueryNeo4j(getDirectlyRelatedNodesStmt, paramsMap, true)
 }
 

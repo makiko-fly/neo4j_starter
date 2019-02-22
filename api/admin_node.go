@@ -15,5 +15,6 @@ func ApiGetDirectlyRelatedNodes(ctx echo.Context) (interface{}, error) {
 	if nodeId <= 0 {
 		return nil, errors.New("NodeId param is invalid")
 	}
-	return business.GetDirectlyRelatedNodes(nodeId)
+	nodeName := strings.TrimSpace(ctx.QueryParam("nodeName"))
+	return business.GetDirectlyRelatedNodes(nodeId, nodeName)
 }
