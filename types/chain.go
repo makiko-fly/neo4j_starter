@@ -26,7 +26,8 @@ type GetProductsOfChainIn struct {
 }
 
 type UpdateChainIn struct {
-	Id      int64  `json:"id"`
-	OldName string `json:"old_name"`
-	Name    string `json:"name"`
+	Id         int64  `json:"id"`
+	OldName    string `json:"old_name"`
+	Name       string `json:"name"`
+	PreviewImg string `json:"preview_img'`
 }
