@@ -11,20 +11,18 @@ import (
 )
 
 func ApiListChains(ctx echo.Context) (interface{}, error) {
-	var listChainsIn types.ListChainsIn
-	if err := ctx.Bind(&listChainsIn); err != nil {
-		return nil, err
+	page, _ := strconv.ParseInt(ctx.Param("page"), 10, 64)
+	limit, _ := strconv.ParseInt(ctx.Param("limit"), 10, 64)
+	if page <= 0 {
+		page = 1
 	}
-	if listChainsIn.Page <= 0 {
-		listChainsIn.Page = 1
+	if limit <= 0 {
+		limit = 10
 	}
-	if listChainsIn.Limit <= 0 {
-		listChainsIn.Limit = 10
-	}
-	if listChainsIn.Limit > 50 {
+	if limit > 50 {
 		return nil, errors.New("Invalid limit")
 	}
-	return business.ListChains(listChainsIn.Page, listChainsIn.Limit)
+	return business.ListChains(page, limit)
 }
 
 func ApiCreateChain(ctx echo.Context) (interface{}, error) {
