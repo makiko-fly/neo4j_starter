@@ -3,6 +3,7 @@ package api
 import (
 	"errors"
 	"fmt"
+	"strconv"
 	"strings"
 
 	"github.com/labstack/echo"
@@ -24,9 +25,21 @@ func ApiSearchByName(ctx echo.Context) (interface{}, error) {
 		}
 	}
 
+	page, _ := strconv.ParseInt(ctx.Param("page"), 10, 64)
+	limit, _ := strconv.ParseInt(ctx.Param("limit"), 10, 64)
+	if page <= 0 {
+		page = 1
+	}
+	if limit <= 0 {
+		limit = 100
+	}
+	if limit > 100 {
+		return nil, errors.New("Invalid limit")
+	}
+
 	if len(labels) == 0 {
-		return business.SearchAllWithNameLikeKeywoard(keywordStr)
+		return business.SearchAllWithNameLikeKeywoard(keywordStr, page, limit)
 	} else {
-		return business.SearchInLabelsWithNameLikeKeyword(keywordStr, labels)
+		return business.SearchInLabelsWithNameLikeKeyword(keywordStr, labels, page, limit)
 	}
 }
