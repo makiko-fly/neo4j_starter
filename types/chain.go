@@ -28,6 +28,6 @@ type UpdateChainIn struct {
 	Id         int64  `json:"id"`
 	OldName    string `json:"old_name"`
 	Name       string `json:"name"`
-	PreviewImg string `json:"preview_img'`
+	PreviewImg string `json:"preview_img"`
 	CustomData string `json:"custom_data"`
 }
