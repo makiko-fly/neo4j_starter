@@ -22,7 +22,7 @@ func SearchAllWithNameLikeKeywoard(keyword string, page, limit int64) (interface
 var searchInLabelsStmtTmp = `
 	MATCH (n)
 	WHERE (%s) AND n.name =~ $regex
-	RETURN n
+	RETURN n, labels(n)
 	SKIP $offset
 	LIMIT $limit
 `
