@@ -7,6 +7,7 @@ import (
 
 	"github.com/labstack/echo"
 	"gitlab.wallstcn.com/matrix/xgbkb/business"
+	"gitlab.wallstcn.com/matrix/xgbkb/g"
 	"gitlab.wallstcn.com/matrix/xgbkb/types"
 )
 
@@ -62,6 +63,19 @@ func ApiUpdateChain(ctx echo.Context) (interface{}, error) {
 		return nil, errors.New("New chain name invalid")
 	}
 	return business.UpdateChain(&updateChainIn)
+}
+
+func ApiDeleteChain(ctx echo.Context) (interface{}, error) {
+	var deleteChainIn types.DeleteChainIn
+	if err := ctx.Bind(&deleteChainIn); err != nil {
+		return nil, err
+	}
+	chainId, _ := strconv.ParseInt(ctx.Param("id"), 10, 64)
+	deleteChainIn.Id = chainId
+	if !business.IsValidChainName(deleteChainIn.Name) {
+		return nil, errors.New("Chain name invalid")
+	}
+	return business.DeleteNode(deleteChainIn.Id, deleteChainIn.Name, g.LabelChain)
 }
 
 func ApiAddProductToChain(ctx echo.Context) (interface{}, error) {

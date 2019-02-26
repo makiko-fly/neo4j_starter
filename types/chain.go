@@ -31,3 +31,8 @@ type UpdateChainIn struct {
 	PreviewImg string `json:"preview_img"`
 	CustomData string `json:"custom_data"`
 }
+
+type DeleteChainIn struct {
+	Id   int64  `json:"id"`
+	Name string `json:"name"`
+}

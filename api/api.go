@@ -39,6 +39,7 @@ func registerAdminApis(g *echo.Group) {
 	adminGroup.GET("/chains/list", WrapRespAsJson(ApiListChains))
 	adminGroup.POST("/chain", WrapRespAsJson(ApiCreateChain))
 	adminGroup.PUT("/chain/:id", WrapRespAsJson(ApiUpdateChain))
+	adminGroup.DELETE("chain/:id", WrapRespAsJson(ApiDeleteChain))
 	adminGroup.GET("/chain/products", WrapRespAsJson(ApiGetProductsOfChain))
 	adminGroup.POST("/chain/addProduct", WrapRespAsJson(ApiAddProductToChain))
 	adminGroup.POST("/chain/remProduct", WrapRespAsJson(ApiRemoveProductFromChain))

@@ -1,6 +1,10 @@
 package business
 
-import "gitlab.wallstcn.com/matrix/xgbkb/types"
+import (
+	"strings"
+
+	"gitlab.wallstcn.com/matrix/xgbkb/types"
+)
 
 var listChainsStmt = "MATCH (c:Chain) RETURN c SKIP $offset LIMIT $limit"
 
@@ -30,6 +34,9 @@ func CreateChain(chainIn *types.ChainIn) (interface{}, error) {
 }
 
 func IsValidChainName(name string) bool {
+	if strings.TrimSpace(name) == "" {
+		return false
+	}
 	return true
 }
 
