@@ -2,6 +2,7 @@ package business
 
 import "fmt"
 
+// return paging results as well as total
 var searchAllWithNameLikeKeywordStmt = `
 	MATCH (n) 
 	WHERE n.name =~ $regex
@@ -13,16 +14,6 @@ var searchAllWithNameLikeKeywordStmt = `
 	WITH results, count(*) as total
 	RETURN results, total
 `
-
-MATCH (n) 
-WHERE n.name =~ ".*铁.*"
-WITH n
-SKIP 0 limit 5
-WITH collect(n) as eles
-match (m)
-WHERE m.name =~ ".*铁.*"
-with eles, count(*) as total
-return eles, total
 
 func SearchAllWithNameLikeKeywoard(keyword string, page, limit int64) (interface{}, error) {
 	statment := ""
