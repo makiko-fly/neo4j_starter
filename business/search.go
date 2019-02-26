@@ -4,11 +4,25 @@ import "fmt"
 
 var searchAllWithNameLikeKeywordStmt = `
 	MATCH (n) 
-	WHERE n.name =~ $regex 
-	RETURN n, labels(n)
-	SKIP $offset
-	LIMIT $limit
+	WHERE n.name =~ $regex
+	WITH n 
+	SKIP $offset LIMIT $limit
+	WITH collect(n) as results
+	MATCH (m)
+	WHERE m.name =~ $regex 
+	WITH results, count(*) as total
+	RETURN results, total
 `
+
+MATCH (n) 
+WHERE n.name =~ ".*铁.*"
+WITH n
+SKIP 0 limit 5
+WITH collect(n) as eles
+match (m)
+WHERE m.name =~ ".*铁.*"
+with eles, count(*) as total
+return eles, total
 
 func SearchAllWithNameLikeKeywoard(keyword string, page, limit int64) (interface{}, error) {
 	statment := ""
