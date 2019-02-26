@@ -13,3 +13,8 @@ type UpdateProductIn struct {
 	OldName string `json:"old_name"`
 	ProductIn
 }
+
+type DeleteProductIn struct {
+	Id   int64  `json:"id"`
+	Name string `json:"name"`
+}

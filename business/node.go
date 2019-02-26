@@ -1,6 +1,7 @@
 package business
 
 import (
+	"fmt"
 	"strings"
 )
 
@@ -22,4 +23,18 @@ func IsValidNodeName(name string) bool {
 		return false
 	}
 	return true
+}
+
+var deleteNodeStmtTmpl = `
+	MATCH (n:%s)
+	WHERE id(n) = $nodeId AND n.name = $nodeName
+	DELETE n
+`
+
+func DeleteNode(id int64, nodeName, label string) (interface{}, error) {
+	deleteNodeStmt := fmt.Sprintf(deleteNodeStmtTmpl, label)
+	paramsMap := make(map[string]interface{})
+	paramsMap["nodeId"] = id
+	paramsMap["nodeName"] = nodeName
+	return QueryNeo4j(deleteNodeStmt, paramsMap, false)
 }
