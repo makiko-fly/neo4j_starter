@@ -37,7 +37,7 @@ func CreateRelation(relationIn *types.RelationIn) (interface{}, error) {
 	paramsMap["fromNodeName"] = relationIn.FromNodeName
 	paramsMap["toNodeId"] = relationIn.ToNodeId
 	paramsMap["toNodeName"] = relationIn.ToNodeName
-	return QueryNeo4j(createRelationStmt, paramsMap, true)
+	return Neo4jSingleQuery(createRelationStmt, paramsMap, true)
 }
 
 var deleteRelationStmtTmpl = `
@@ -69,5 +69,5 @@ func DeleteRelation(relationIn *types.RelationIn) (interface{}, error) {
 	paramsMap["fromNodeName"] = relationIn.FromNodeName
 	paramsMap["toNodeId"] = relationIn.ToNodeId
 	paramsMap["toNodeName"] = relationIn.ToNodeName
-	return QueryNeo4j(deleteRelationStmt, paramsMap, false)
+	return Neo4jSingleQuery(deleteRelationStmt, paramsMap, false)
 }

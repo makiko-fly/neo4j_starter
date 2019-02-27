@@ -11,7 +11,7 @@ func CreateProduct(productIn *types.ProductIn) (interface{}, error) {
 	paramsMap["name"] = productIn.Name
 	paramsMap["imgActivated"] = productIn.ImgActivated
 	paramsMap["imgNormal"] = productIn.ImgNormal
-	return QueryNeo4j(createProductStmt, paramsMap, false)
+	return Neo4jSingleQuery(createProductStmt, paramsMap, false)
 }
 
 var updateProductStmt = `
@@ -27,7 +27,7 @@ func UpdateProduct(id int64, oldName string, productIn *types.ProductIn) (interf
 	paramsMap["newName"] = productIn.Name
 	paramsMap["imgActivated"] = productIn.ImgActivated
 	paramsMap["imgNormal"] = productIn.ImgNormal
-	return QueryNeo4j(updateProductStmt, paramsMap, false)
+	return Neo4jSingleQuery(updateProductStmt, paramsMap, false)
 }
 
 func IsValidProductName(name string) bool {

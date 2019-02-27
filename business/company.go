@@ -9,7 +9,7 @@ func CreateCompany(companyIn *types.CompanyIn) (interface{}, error) {
 	paramsMap["name"] = companyIn.Name
 	paramsMap["nameAbbr"] = companyIn.NameAbbr
 	paramsMap["code"] = companyIn.Code
-	return QueryNeo4j(createCompanyStmt, paramsMap, false)
+	return Neo4jSingleQuery(createCompanyStmt, paramsMap, false)
 }
 
 var mergeListedAsStmt = `
@@ -22,5 +22,5 @@ func MergeListedAsRelation(companyIn *types.CompanyIn, stockIn *types.StockIn) (
 	paramsMap := make(map[string]interface{})
 	paramsMap["code"] = companyIn.Code
 	paramsMap["symbol"] = stockIn.Symbol
-	return QueryNeo4j(mergeListedAsStmt, paramsMap, false)
+	return Neo4jSingleQuery(mergeListedAsStmt, paramsMap, false)
 }

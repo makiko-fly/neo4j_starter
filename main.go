@@ -33,6 +33,7 @@ func main() {
 	e := echo.New()
 	e.Use(middleware.LogRequest)
 	e.Use(echoware.CORSWithConfig(echoware.DefaultCORSConfig))
+
 	baseGroup := e.Group("")
 	api.RegisterHttpPaths(baseGroup)
 	err := e.Start(fmt.Sprintf("0.0.0.0:%d", g.SysConf.Http.Port))

@@ -11,7 +11,7 @@ func GetDirectlyRelatedNodes(nodeId int64, nodeName string) (interface{}, error)
 	paramsMap := make(map[string]interface{})
 	paramsMap["nodeId"] = nodeId
 	paramsMap["nodeName"] = nodeName
-	return QueryNeo4j(getDirectlyRelatedNodesStmt, paramsMap, true)
+	return Neo4jSingleQuery(getDirectlyRelatedNodesStmt, paramsMap, true)
 }
 
 // name's emptiness should alreay have been checked
@@ -36,5 +36,5 @@ func DeleteNode(id int64, nodeName, label string) (interface{}, error) {
 	paramsMap := make(map[string]interface{})
 	paramsMap["nodeId"] = id
 	paramsMap["nodeName"] = nodeName
-	return QueryNeo4j(deleteNodeStmt, paramsMap, false)
+	return Neo4jSingleQuery(deleteNodeStmt, paramsMap, false)
 }

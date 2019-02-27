@@ -2,25 +2,34 @@ package business
 
 import "fmt"
 
-// return paging results as well as total
 var searchAllWithNameLikeKeywordStmt = `
 	MATCH (n) 
 	WHERE n.name =~ $regex
-	WITH n 
+	RETURN n, labels(n)
 	SKIP $offset LIMIT $limit
-	WITH collect(n) as results, collect(labels(n)) as labels
-	MATCH (m)
-	WHERE m.name =~ $regex 
-	WITH results, labels, count(*) as total
-	RETURN results, labels, total
+`
+
+var countAllWithNameLikeKeywordStmt = `
+	MATCH (n) 
+	WHERE n.name =~ $regex
+	RETURN count(n)
 `
 
 func SearchAllWithNameLikeKeywoard(keyword string, page, limit int64) (interface{}, error) {
-	paramsMap := make(map[string]interface{})
-	paramsMap["regex"] = fmt.Sprintf(".*%s.*", keyword)
-	paramsMap["offset"] = (page - 1) * limit
-	paramsMap["limit"] = limit
-	return QueryNeo4j(searchAllWithNameLikeKeywordStmt, paramsMap, false)
+	searchStmt := searchAllWithNameLikeKeywordStmt
+	searchParamsMap := make(map[string]interface{})
+	searchParamsMap["regex"] = fmt.Sprintf(".*%s.*", keyword)
+	searchParamsMap["offset"] = (page - 1) * limit
+	searchParamsMap["limit"] = limit
+
+	countStmt := countAllWithNameLikeKeywordStmt
+	countParamsMap := make(map[string]interface{})
+	countParamsMap["regex"] = fmt.Sprintf(".*%s.*", keyword)
+
+	statements := []string{searchStmt, countStmt}
+	paramsArr := []map[string]interface{}{searchParamsMap, countParamsMap}
+	includeGraphs := []bool{false, false}
+	return Neo4jMultiQuery(statements, paramsArr, includeGraphs)
 }
 
 var searchInLabelsStmtTmp = `
@@ -49,5 +58,5 @@ func SearchInLabelsWithNameLikeKeyword(keyword string, labels []string, page, li
 	paramsMap["regex"] = fmt.Sprintf(".*%s.*", keyword)
 	paramsMap["offset"] = (page - 1) * limit
 	paramsMap["limit"] = limit
-	return QueryNeo4j(searchInLabelsStmt, paramsMap, false)
+	return Neo4jSingleQuery(searchInLabelsStmt, paramsMap, false)
 }

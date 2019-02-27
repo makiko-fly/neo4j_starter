@@ -13,7 +13,7 @@ func ListChains(page, limit int64) (interface{}, error) {
 	paramsMap := make(map[string]interface{})
 	paramsMap["offset"] = offset
 	paramsMap["limit"] = limit
-	return QueryNeo4j(listChainsStmt, paramsMap, false)
+	return Neo4jSingleQuery(listChainsStmt, paramsMap, false)
 }
 
 var getChainStmt = "MATCH (c:Chain {name:$name}) WHERE id(c) = $id RETURN c"
@@ -22,7 +22,7 @@ func GetChain(id int64, name string) (interface{}, error) {
 	paramsMap := make(map[string]interface{})
 	paramsMap["id"] = id
 	paramsMap["name"] = name
-	return QueryNeo4j(getChainStmt, paramsMap, false)
+	return Neo4jSingleQuery(getChainStmt, paramsMap, false)
 }
 
 var createChainStmt = "CREATE (c:Chain {name: $name}) RETURN c"
@@ -30,7 +30,7 @@ var createChainStmt = "CREATE (c:Chain {name: $name}) RETURN c"
 func CreateChain(chainIn *types.ChainIn) (interface{}, error) {
 	paramsMap := make(map[string]interface{})
 	paramsMap["name"] = chainIn.Name
-	return QueryNeo4j(createChainStmt, paramsMap, false)
+	return Neo4jSingleQuery(createChainStmt, paramsMap, false)
 }
 
 func IsValidChainName(name string) bool {
@@ -53,7 +53,7 @@ func UpdateChain(updateChainIn *types.UpdateChainIn) (interface{}, error) {
 	paramsMap["newName"] = updateChainIn.Name
 	paramsMap["previewImg"] = updateChainIn.PreviewImg
 	paramsMap["customData"] = updateChainIn.CustomData
-	return QueryNeo4j(updateChainStmt, paramsMap, false)
+	return Neo4jSingleQuery(updateChainStmt, paramsMap, false)
 }
 
 var addProductToChainStmt = `
@@ -69,7 +69,7 @@ func AddProductToChain(addProductToChainIn *types.AddProductToChainIn) (interfac
 	paramsMap["productId"] = addProductToChainIn.ProductId
 	paramsMap["chainName"] = addProductToChainIn.ChainName
 	paramsMap["chainId"] = addProductToChainIn.ChainId
-	return QueryNeo4j(addProductToChainStmt, paramsMap, false)
+	return Neo4jSingleQuery(addProductToChainStmt, paramsMap, false)
 }
 
 var remProductToChainStmt = `
@@ -85,7 +85,7 @@ func RemProductFromChain(remProductFromChainIn *types.RemProductFromChainIn) (in
 	paramsMap["productId"] = remProductFromChainIn.ProductId
 	paramsMap["chainName"] = remProductFromChainIn.ChainName
 	paramsMap["chainId"] = remProductFromChainIn.ChainId
-	return QueryNeo4j(remProductToChainStmt, paramsMap, false)
+	return Neo4jSingleQuery(remProductToChainStmt, paramsMap, false)
 }
 
 var getProductsOfChainStmt = `
@@ -98,5 +98,5 @@ func GetProductsOfChain(chainId int64, chainName string) (interface{}, error) {
 	paramsMap := make(map[string]interface{})
 	paramsMap["chainId"] = chainId
 	paramsMap["chainName"] = chainName
-	return QueryNeo4j(getProductsOfChainStmt, paramsMap, true)
+	return Neo4jSingleQuery(getProductsOfChainStmt, paramsMap, true)
 }

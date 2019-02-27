@@ -13,7 +13,7 @@ func MergeStock(stockIn *types.StockIn) (interface{}, error) {
 	paramsMap := make(map[string]interface{})
 	paramsMap["symbol"] = stockIn.Symbol
 	paramsMap["name"] = stockIn.Name
-	return QueryNeo4j(mergeStockStmt, paramsMap, false)
+	return Neo4jSingleQuery(mergeStockStmt, paramsMap, false)
 }
 
 // func CreateStock(stockIn *types.StockIn) (interface{}, error) {

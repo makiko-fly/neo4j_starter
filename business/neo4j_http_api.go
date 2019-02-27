@@ -46,7 +46,7 @@ func InitNeo4j() {
 
 // assert the statement can be executed successfully, if any err occurs, panic
 func AssertQueryNeo4j(stmt string, params map[string]interface{}) {
-	data, err := QueryNeo4j(stmt, params, false)
+	data, err := Neo4jSingleQuery(stmt, params, false)
 	if err != nil {
 		redislogger.Errf("InitNeo4j, stmt: %s, fails to execute, err: %v", stmt, err)
 		panic(err)
@@ -62,8 +62,17 @@ func AssertQueryNeo4j(stmt string, params map[string]interface{}) {
 	}
 }
 
-// single query
-func QueryNeo4j(statement string, params map[string]interface{}, includeGraphData bool) ([]byte, error) {
+var singleStatementTempl = `
+{
+	"statements" : [ {
+	  "statement" : "%s",
+	  "parameters" : %s,
+	  "resultDataContents" : [ "row" %s ]
+	} ]
+}
+`
+
+func Neo4jSingleQuery(statement string, params map[string]interface{}, includeGraphData bool) ([]byte, error) {
 	parametersStr := "{}"
 	if len(params) > 0 {
 		bytes, err := json.Marshal(params)
@@ -93,15 +102,71 @@ func QueryNeo4j(statement string, params map[string]interface{}, includeGraphDat
 	}
 }
 
-var singleStatementTempl = `
-{
-	"statements" : [ {
-	  "statement" : "%s",
-	  "parameters" : %s,
-	  "resultDataContents" : [ "row" %s ]
-	} ]
+func Neo4jMultiQuery(statements []string, paramsArr []map[string]interface{}, includeGraphDatas []bool) ([]byte, error) {
+	if len(statements) != len(paramsArr) || len(statements) != len(includeGraphDatas) {
+		errMsg := fmt.Sprintf("Neo4jMultiQuery, number of statements, params and flags don't match")
+		redislogger.Errf(errMsg)
+		return nil, errors.New(errMsg)
+	}
+
+	var wholeStmtFont = `
+	{
+		"statements" : [
+	`
+	var wholeStmtRear = `
+		]
+	}`
+
+	var wholeStmt = wholeStmtFont
+	for idx, stmt := range statements {
+		if stmtSnippet, err := getStmtSnippet(stmt, paramsArr[idx], includeGraphDatas[idx]); err != nil {
+			return nil, err
+		} else if idx == len(statements)-1 {
+			wholeStmt = wholeStmt + stmtSnippet
+		} else {
+			wholeStmt = wholeStmt + stmtSnippet + ","
+		}
+	}
+	wholeStmt = wholeStmt + wholeStmtRear
+
+	if byteArr, err := callNeo4jHttpApi("/db/data/transaction/commit", wholeStmt); err != nil {
+		return nil, err
+	} else {
+		if resp, err := parseNeo4jJsonResp(byteArr); err != nil {
+			return nil, err
+		} else {
+			if len(resp.Errors) > 0 {
+				return nil, std.NewNeo4jQueryErr(resp.Errors[0].String())
+			} else {
+				return byteArr, nil
+			}
+		}
+	}
+}
+
+var stmtSnippetTempl = `{
+	"statement" : "%s",
+	"parameters" : %s,
+	"resultDataContents" : [ "row" %s ]
 }
 `
+
+func getStmtSnippet(stmt string, params map[string]interface{}, includeGraphData bool) (string, error) {
+	parametersStr := "{}"
+	if len(params) > 0 {
+		bytes, err := json.Marshal(params)
+		if err != nil {
+			redislogger.Errf("getStmtSnippet, fails to marshal params: %v, err: %v", params, err)
+			return "", err
+		}
+		parametersStr = string(bytes)
+	}
+	graphData := ""
+	if includeGraphData {
+		graphData = `,"graph"`
+	}
+	return fmt.Sprintf(stmtSnippetTempl, EscapeStmt(stmt), parametersStr, graphData), nil
+}
 
 func callNeo4jHttpApi(path, bodyStr string) ([]byte, error) {
 	urlStr := fmt.Sprintf("http://%s:%d%s", g.SysConf.Neo4jDb.Addr, g.SysConf.Neo4jDb.HttpPort, path)
@@ -115,6 +180,8 @@ func callNeo4jHttpApi(path, bodyStr string) ([]byte, error) {
 	// logger.Infof("===> encodedAuthStr: %s", encodedAuthStr)
 	req.Header.Set("Authorization", "Basic "+encodedAuthStr)
 	logger.Infof("=== calling neo4j HTTP API with statements: %s", bodyStr)
+	// TODO... call this method only on DEV env
+	redislogger.Printf("=== calling neo4j HTTP API with statements: %s", bodyStr)
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
 		redislogger.Errf("callNeo4jHttpApi, http POST fails, err: %v", err)
