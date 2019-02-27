@@ -117,7 +117,7 @@ func GetProductsOfChain(chainId int64, chainName string) (interface{}, error) {
 
 var getChainsContainingProductStmt = `
 	MATCH (:Product {name:$name})-[:WITHIN_CHAIN]-(c:Chain)
-	RETURN c
+	RETURN c.name, id(c)
 `
 
 func GetChainsContainingProduct(productName string) (interface{}, error) {
