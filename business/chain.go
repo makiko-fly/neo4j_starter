@@ -6,14 +6,28 @@ import (
 	"gitlab.wallstcn.com/matrix/xgbkb/types"
 )
 
-var listChainsStmt = "MATCH (c:Chain) RETURN c SKIP $offset LIMIT $limit"
+var listChainsStmt = `
+	MATCH (c:Chain) 
+	RETURN c 
+	SKIP $offset LIMIT $limit
+`
+
+var countChainsStmt = `
+	MATCH (c:Chain)
+	RETURN count(c)
+`
 
 func ListChains(page, limit int64) (interface{}, error) {
-	offset := (page - 1) * limit
-	paramsMap := make(map[string]interface{})
-	paramsMap["offset"] = offset
-	paramsMap["limit"] = limit
-	return Neo4jSingleQuery(listChainsStmt, paramsMap, false)
+	listParamsMap := make(map[string]interface{})
+	listParamsMap["offset"] = (page - 1) * limit
+	listParamsMap["limit"] = limit
+
+	countParamsMap := make(map[string]interface{})
+
+	statements := []string{listChainsStmt, countChainsStmt}
+	paramsMapArr := []map[string]interface{}{listParamsMap, countParamsMap}
+	includeGraphs := []bool{false, false}
+	return Neo4jMultiQuery(statements, paramsMapArr, includeGraphs)
 }
 
 var getChainStmt = "MATCH (c:Chain {name:$name}) WHERE id(c) = $id RETURN c"
