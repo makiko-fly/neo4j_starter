@@ -116,3 +116,14 @@ func ApiGetProductsOfChain(ctx echo.Context) (interface{}, error) {
 	}
 	return business.GetProductsOfChain(getProductsOfChainIn.ChainId, getProductsOfChainIn.ChainName)
 }
+
+func ApiGetChainsContainingProduct(ctx echo.Context) (interface{}, error) {
+	productName := strings.TrimSpace(ctx.QueryParam("productName"))
+	if productName == "" {
+		return nil, errors.New("Product name is empty")
+	}
+	if !business.IsValidProductName(productName) {
+		return nil, errors.New("Product name is invalid")
+	}
+	return business.GetChainsContainingProduct(productName)
+}

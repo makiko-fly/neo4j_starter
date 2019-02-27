@@ -114,3 +114,14 @@ func GetProductsOfChain(chainId int64, chainName string) (interface{}, error) {
 	paramsMap["chainName"] = chainName
 	return Neo4jSingleQuery(getProductsOfChainStmt, paramsMap, true)
 }
+
+var getChainsContainingProductStmt = `
+	MATCH (:Product {name:$name})-[:WITHIN_CHAIN]-(c:Chain)
+	RETURN c
+`
+
+func GetChainsContainingProduct(productName string) (interface{}, error) {
+	paramsMap := make(map[string]interface{})
+	paramsMap["name"] = productName
+	return Neo4jSingleQuery(getChainsContainingProductStmt, paramsMap, false)
+}
