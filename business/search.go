@@ -8,11 +8,11 @@ var searchAllWithNameLikeKeywordStmt = `
 	WHERE n.name =~ $regex
 	WITH n 
 	SKIP $offset LIMIT $limit
-	WITH collect(n) as results
+	WITH collect(n) as results, collect(labels(n)) as labels
 	MATCH (m)
 	WHERE m.name =~ $regex 
-	WITH results, count(*) as total
-	RETURN results, total
+	WITH results, labels, count(*) as total
+	RETURN results, labels, total
 `
 
 func SearchAllWithNameLikeKeywoard(keyword string, page, limit int64) (interface{}, error) {
