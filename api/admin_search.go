@@ -28,8 +28,8 @@ func ApiSearchByName(ctx echo.Context) (interface{}, error) {
 		}
 	}
 
-	page, _ := strconv.ParseInt(ctx.Param("page"), 10, 64)
-	limit, _ := strconv.ParseInt(ctx.Param("limit"), 10, 64)
+	page, _ := strconv.ParseInt(ctx.QueryParam("page"), 10, 64)
+	limit, _ := strconv.ParseInt(ctx.QueryParam("limit"), 10, 64)
 	if page <= 0 {
 		page = 1
 	}
