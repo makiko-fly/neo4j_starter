@@ -18,10 +18,13 @@ func ApiSearchByName(ctx echo.Context) (interface{}, error) {
 	}
 
 	labelsStr := strings.TrimSpace(ctx.QueryParam("labels"))
-	labels := strings.Split(labelsStr, ",")
-	for _, label := range labels {
-		if _, found := g.AllLabelsMap[label]; !found {
-			return nil, fmt.Errorf("Label %s invalid", label)
+	labels := make([]string, 0)
+	if len(labelsStr) != 0 {
+		labels = strings.Split(labelsStr, ",")
+		for _, label := range labels {
+			if _, found := g.AllLabelsMap[label]; !found {
+				return nil, fmt.Errorf("Label %s invalid", label)
+			}
 		}
 	}
 
