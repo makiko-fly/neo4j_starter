@@ -16,12 +16,11 @@ var searchAllWithNameLikeKeywordStmt = `
 `
 
 func SearchAllWithNameLikeKeywoard(keyword string, page, limit int64) (interface{}, error) {
-	statment := ""
 	paramsMap := make(map[string]interface{})
 	paramsMap["regex"] = fmt.Sprintf(".*%s.*", keyword)
 	paramsMap["offset"] = (page - 1) * limit
 	paramsMap["limit"] = limit
-	return QueryNeo4j(statment, paramsMap, false)
+	return QueryNeo4j(searchAllWithNameLikeKeywordStmt, paramsMap, false)
 }
 
 var searchInLabelsStmtTmp = `
