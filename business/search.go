@@ -9,7 +9,7 @@ var searchAllWithNameLikeKeywordStmt = `
 	SKIP $offset LIMIT $limit
 `
 
-var countAllWithNameLikeKeywordStmt = `
+var countSearchAllWithNameLikeKeywordStmt = `
 	MATCH (n) 
 	WHERE n.name =~ $regex
 	RETURN count(n)
@@ -22,22 +22,28 @@ func SearchAllWithNameLikeKeywoard(keyword string, page, limit int64) (interface
 	searchParamsMap["offset"] = (page - 1) * limit
 	searchParamsMap["limit"] = limit
 
-	countStmt := countAllWithNameLikeKeywordStmt
+	countStmt := countSearchAllWithNameLikeKeywordStmt
 	countParamsMap := make(map[string]interface{})
 	countParamsMap["regex"] = fmt.Sprintf(".*%s.*", keyword)
 
 	statements := []string{searchStmt, countStmt}
-	paramsArr := []map[string]interface{}{searchParamsMap, countParamsMap}
+	paramsMapArr := []map[string]interface{}{searchParamsMap, countParamsMap}
 	includeGraphs := []bool{false, false}
-	return Neo4jMultiQuery(statements, paramsArr, includeGraphs)
+	return Neo4jMultiQuery(statements, paramsMapArr, includeGraphs)
 }
 
-var searchInLabelsStmtTmp = `
+var searchInLabelsStmtTempl = `
 	MATCH (n)
 	WHERE (%s) AND n.name =~ $regex
 	RETURN n, labels(n)
 	SKIP $offset
 	LIMIT $limit
+`
+
+var countSearchInLabelsStmtTempl = `
+	MATCH (n)
+	WHERE (%s) AND n.name =~ $regex
+	RETURN count(n)
 `
 
 func SearchInLabelsWithNameLikeKeyword(keyword string, labels []string, page, limit int64) (interface{}, error) {
@@ -52,11 +58,19 @@ func SearchInLabelsWithNameLikeKeyword(keyword string, labels []string, page, li
 		}
 	}
 
-	searchInLabelsStmt := fmt.Sprintf(searchInLabelsStmtTmp, subQuery)
+	searchInLabelsStmt := fmt.Sprintf(searchInLabelsStmtTempl, subQuery)
+	searchParamsMap := make(map[string]interface{})
+	searchParamsMap["regex"] = fmt.Sprintf(".*%s.*", keyword)
+	searchParamsMap["offset"] = (page - 1) * limit
+	searchParamsMap["limit"] = limit
 
-	paramsMap := make(map[string]interface{})
-	paramsMap["regex"] = fmt.Sprintf(".*%s.*", keyword)
-	paramsMap["offset"] = (page - 1) * limit
-	paramsMap["limit"] = limit
-	return Neo4jSingleQuery(searchInLabelsStmt, paramsMap, false)
+	countInLabelsStmt := fmt.Sprintf(countSearchInLabelsStmtTempl, subQuery)
+	countParamsMap := make(map[string]interface{})
+	countParamsMap["regex"] = fmt.Sprintf(".*%s.*", keyword)
+
+	statements := []string{searchInLabelsStmt, countInLabelsStmt}
+	paramsMapArr := []map[string]interface{}{searchParamsMap, countParamsMap}
+	includeGraphs := []bool{false, false}
+
+	return Neo4jMultiQuery(statements, paramsMapArr, includeGraphs)
 }
