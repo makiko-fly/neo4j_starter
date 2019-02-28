@@ -12,7 +12,6 @@ import (
 
 	"gitlab.wallstcn.com/matrix/xgbkb/g"
 	"gitlab.wallstcn.com/matrix/xgbkb/std"
-	"gitlab.wallstcn.com/matrix/xgbkb/std/logger"
 	"gitlab.wallstcn.com/matrix/xgbkb/std/redislogger"
 	"gitlab.wallstcn.com/matrix/xgbkb/types"
 )
@@ -179,9 +178,11 @@ func callNeo4jHttpApi(path, bodyStr string) ([]byte, error) {
 	encodedAuthStr := encodeNeo4jUserNameAndPassword(g.SysConf.Neo4jDb.UserName, g.SysConf.Neo4jDb.Password)
 	// logger.Infof("===> encodedAuthStr: %s", encodedAuthStr)
 	req.Header.Set("Authorization", "Basic "+encodedAuthStr)
-	logger.Infof("=== calling neo4j HTTP API with statements: %s", bodyStr)
-	// TODO... call this method only on DEV env
-	redislogger.Printf("=== calling neo4j HTTP API with statements: %s", bodyStr)
+	// logger.Infof("=== calling neo4j HTTP API with statements: %s", bodyStr)
+	// if !std.IsProdEnv() {
+	// 	redislogger.Printf("=== calling neo4j HTTP API with statements: %s", bodyStr)
+	// }
+
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
 		redislogger.Errf("callNeo4jHttpApi, http POST fails, err: %v", err)
