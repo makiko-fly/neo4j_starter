@@ -22,7 +22,7 @@ import (
 var jobsRunner *cron.Cron
 
 func StartJobs() {
-	RunOneTimeTasks()
+	// RunOneTimeTasks()
 
 	jobsRunner = cron.NewWithLocation(g.ShanghaiTimezone)
 
@@ -35,9 +35,9 @@ func StartJobs() {
 
 func RunOneTimeTasks() {
 	go func() {
-		std.NewMutexTask(SyncCompaniesAndStocksFromJuyuan).
-			WithMutex(std.NewSimpleRedisMutex("SyncCompaniesAndStocksFromJuyuan", time.Minute*4, g.RedisClientMain)).
-			Run()
+		// std.NewMutexTask(SyncCompaniesAndStocksFromJuyuan).
+		// 	WithMutex(std.NewSimpleRedisMutex("SyncCompaniesAndStocksFromJuyuan", time.Minute*4, g.RedisClientMain)).
+		// 	Run()
 	}()
 }
 
