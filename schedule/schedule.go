@@ -22,9 +22,9 @@ import (
 var jobsRunner *cron.Cron
 
 func StartJobs() {
-	jobsRunner = cron.NewWithLocation(g.ShanghaiTimezone)
-
 	RunOneTimeTasks()
+
+	jobsRunner = cron.NewWithLocation(g.ShanghaiTimezone)
 
 	// 每天更新公司到图数据库
 	jobsRunner.AddJob("0 0 1 * * *", std.NewMutexTask(SyncCompaniesAndStocksFromJuyuan).
@@ -35,9 +35,9 @@ func StartJobs() {
 
 func RunOneTimeTasks() {
 	go func() {
-		// std.NewMutexTask(SyncCompaniesAndStocksFromJuyuan).
-		// 	WithMutex(std.NewSimpleRedisMutex("SyncCompaniesAndStocksFromJuyuan", time.Minute*4, g.RedisClientMain)).
-		// 	Run()
+		std.NewMutexTask(SyncCompaniesAndStocksFromJuyuan).
+			WithMutex(std.NewSimpleRedisMutex("SyncCompaniesAndStocksFromJuyuan", time.Minute*4, g.RedisClientMain)).
+			Run()
 	}()
 }
 

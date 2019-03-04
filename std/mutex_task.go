@@ -23,8 +23,11 @@ func (self *MutexTask) Run() {
 	if success, err := self.Mutex.Lock(); err != nil {
 		redislogger.Errf("MutexTask.Run(), obtain lock err: %v", err)
 	} else if success {
+		redislogger.Errf("MutexTask.Run(), obtain lock success!")
 		defer self.Mutex.UnLock()
 		self.Func()
+	} else {
+		redislogger.Printf("MutexTask.Run(), obtain lock fails")
 	}
 }
 

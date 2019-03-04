@@ -12,9 +12,15 @@ import (
 
 	"gitlab.wallstcn.com/matrix/xgbkb/g"
 	"gitlab.wallstcn.com/matrix/xgbkb/std"
+	"gitlab.wallstcn.com/matrix/xgbkb/std/logger"
 	"gitlab.wallstcn.com/matrix/xgbkb/std/redislogger"
 	"gitlab.wallstcn.com/matrix/xgbkb/types"
 )
+
+var maintainInitialNodeStmt = `
+	MERGE (s:Setting {key:'appName'})
+	ON CREATE SET s.appName = 'xgbkb'
+`
 
 func InitNeo4j() {
 	// add property exist constraint to Product's `name` property
@@ -41,6 +47,11 @@ func InitNeo4j() {
 	AssertQueryNeo4j("CREATE CONSTRAINT ON (c:Chain) ASSERT exists(c.name)", nil)
 	// add unique constraint to Chain's properties
 	AssertQueryNeo4j("CREATE CONSTRAINT ON (c:Chain) ASSERT c.name IS UNIQUE", nil)
+
+	// create an initial setting node to take the node id 0
+	if _, err := Neo4jSingleQuery(maintainInitialNodeStmt, nil, false); err != nil {
+		redislogger.Errf("InitNeo4j, maintain initial node err: %v", err)
+	}
 }
 
 // assert the statement can be executed successfully, if any err occurs, panic
@@ -178,7 +189,7 @@ func callNeo4jHttpApi(path, bodyStr string) ([]byte, error) {
 	encodedAuthStr := encodeNeo4jUserNameAndPassword(g.SysConf.Neo4jDb.UserName, g.SysConf.Neo4jDb.Password)
 	// logger.Infof("===> encodedAuthStr: %s", encodedAuthStr)
 	req.Header.Set("Authorization", "Basic "+encodedAuthStr)
-	// logger.Infof("=== calling neo4j HTTP API with statements: %s", bodyStr)
+	logger.Infof("=== calling neo4j HTTP API with statements: %s", bodyStr)
 	// if !std.IsProdEnv() {
 	// 	redislogger.Printf("=== calling neo4j HTTP API with statements: %s", bodyStr)
 	// }
