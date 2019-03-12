@@ -4,9 +4,9 @@ redis_logger:
   auth: "crs-ec8hbn1w:253Huaerjie!"
   
 neo4j_db:
-  addr: "10.0.50.16"
+  addr: "10.0.50.4"
   bolt_port: 7687 # not used
-  http_port: 17474 
+  http_port: 7474 
   https_port: 7473 # not used
 
 http:
