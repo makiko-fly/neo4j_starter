@@ -23,6 +23,8 @@ var maintainInitialNodeStmt = `
 `
 
 func InitNeo4j() {
+	// authenticate first
+	authenticate()
 	// add property exist constraint to Product's `name` property
 	AssertQueryNeo4j("CREATE CONSTRAINT ON (p:Product) ASSERT exists(p.name)", nil)
 	// add unique constraint to Product's `name` property
@@ -212,6 +214,36 @@ func callNeo4jHttpApi(path, bodyStr string) ([]byte, error) {
 		return nil, errors.New(errStr)
 	}
 	return respBodyBytes, nil
+}
+
+func authenticate() {
+	urlStr := fmt.Sprintf("http://%s:%d%s", g.SysConf.Neo4jDb.Addr, g.SysConf.Neo4jDb.HttpPort, "/user/neo4j")
+	req, err := http.NewRequest(http.MethodGet, urlStr, nil)
+	if err != nil {
+		redislogger.Errf("authenticate, create request fails, err: %v", err)
+		panic(err)
+	}
+	req.Header.Set("Content-Type", "application/json")
+	encodedAuthStr := encodeNeo4jUserNameAndPassword(g.SysConf.Neo4jDb.UserName, g.SysConf.Neo4jDb.Password)
+	req.Header.Set("Authorization", "Basic "+encodedAuthStr)
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		redislogger.Errf("authenticate, http request fails, err: %v", err)
+		panic(err)
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != 200 {
+		errStr := fmt.Sprintf("authenticate, http request returns code other than 200, code: %d", resp.StatusCode)
+		redislogger.Errf(errStr)
+		panic(errors.New(errStr))
+	} else {
+		respBodyBytes, err := ioutil.ReadAll(resp.Body)
+		if err != nil {
+			panic(err)
+		}
+		redislogger.Printf("authenticate, response text: %s", string(respBodyBytes))
+	}
 }
 
 func parseNeo4jJsonResp(data []byte) (*types.Neo4jQueryResponse, error) {
