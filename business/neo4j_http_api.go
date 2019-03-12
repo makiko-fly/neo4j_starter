@@ -227,6 +227,9 @@ func authenticate() {
 	encodedAuthStr := encodeNeo4jUserNameAndPassword(g.SysConf.Neo4jDb.UserName, g.SysConf.Neo4jDb.Password)
 	req.Header.Set("Authorization", "Basic "+encodedAuthStr)
 
+	redislogger.Printf("userName: %s, password: %s, auth: %s", g.SysConf.Neo4jDb.UserName, g.SysConf.Neo4jDb.Password,
+		encodedAuthStr)
+
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
 		redislogger.Errf("authenticate, http request fails, err: %v", err)
