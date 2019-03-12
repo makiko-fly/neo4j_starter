@@ -8,7 +8,7 @@ neo4j_db:
   bolt_port: 7687 # not used
   http_port: 7474 
   https_port: 7473 # not used
-  user_name: "root"
+  user_name: "neo4j"
   password: "253Huaerjie!"
 
 http:
